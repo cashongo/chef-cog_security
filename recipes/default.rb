@@ -7,17 +7,53 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'users'
 include_recipe 'sudo'
-
-users_manage node['cog_security']['sudo_group'] do
-  group_id node['cog_security']['sudo_group_id']
-  data_bag node['cog_security']['bag_name']
-end
 
 service "ssh" do
   service_name node['cog_security']['ssh_service_name']
   action :nothing
+end
+
+chef_gem 'chef-vault' do
+  compile_time true if respond_to?(:compile_time)
+end
+
+require 'chef-vault'
+
+rootuser=ChefVault::Item.load(node['cog_security']['bag_name'], "root")
+
+user 'root' do
+  action :manage
+  password rootuser['password']
+  only_if { rootuser['password'] }
+end
+
+node['cog_security']['admin_users'].each do |n|
+  #User data from vault
+  u=ChefVault::Item.load(node['cog_security']['bag_name'], n)
+
+  ### Need to create user first
+  home_dir=node['cog_security']['home_base'] + '/' + u['id']
+  user u['id'] do
+    action :create
+    home home_dir
+    manage_home true
+  end
+  directory "#{home_dir}/.ssh" do
+    owner u['id']
+    group u['gid'] || u['username']
+    mode "0700"
+  end
+
+  template "#{home_dir}/.ssh/authorized_keys" do
+    source "authorized_keys.erb"
+    cookbook 'cog_security'
+    owner u['id']
+    group u['gid'] || u['id']
+    mode "0600"
+    variables :ssh_keys => u['ssh_keys']
+    only_if {u['ssh_keys']}
+  end
 end
 
 ruby_block "edit sshd_config" do
@@ -31,10 +67,8 @@ ruby_block "edit sshd_config" do
   notifies :restart, "service[ssh]"
 end
 
-rootuser=search(node['cog_security']['bag_name'],'id:root')
-
-user 'root' do
-  action :manage
-  password rootuser.first['password']
-  only_if { rootuser.count==1 }
+group node['cog_security']['sudo_group'] do
+  action :create
+  members node['cog_security']['admin_users']
+  append false
 end

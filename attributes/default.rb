@@ -1,7 +1,8 @@
 default['cog_security']['ssh_disable_root_login'] = false
-default['cog_security']['sudo_group'] = 'wheel'
-default['cog_security']['sudo_group_id'] = 10
+default['cog_security']['sudo_group'] = 'sysadmins'
 default['cog_security']['bag_name'] = 'users'
+default['cog_security']['home_base'] = '/home'
+default['cog_security']['admin_users'] = []
 
 
 default['authorization']['sudo']['groups']            = [default['cog_security']['sudo_group']]
