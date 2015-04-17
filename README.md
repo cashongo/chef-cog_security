@@ -27,9 +27,9 @@ Linux, centos and debian
     <td><tt>'wheel'</tt></td>
   </tr>
   <tr>
-    <td><tt>['cog_security']['sudo_group_id']</tt></td>
-    <td>Numeric</td>
-    <td>Sudo group numeric ID</td>
+    <td><tt>['cog_security']['admin_users']</tt></td>
+    <td>Array of strings</td>
+    <td>Array of admin usernames</td>
     <td><tt>10</tt></td>
   </tr>
   <tr>
@@ -54,10 +54,20 @@ Include `cog_security` in your node's `run_list`:
 }
 ```
 
-Add users to data bag mentioned in attributes. Only users which have group
-mentioned in attributes are being added.
+Create knife vault for each user, bag name should be ['cog_security']['bag_name'],
+item name should be username
 
-For details how to configure users look at https://github.com/opscode-cookbooks/users
+```json
+{
+  "id": "sysadmin.user",
+  "ssh_keys": [
+    "ssh-rsa AAAA....xxx user@machine"
+    ],
+  "shell": "/bin/bash",
+  "comment": "Sysadmin User"
+}
+```
+
 
 If you add id : 'root' and 'password' : 'rootpasswordhash' to root item in data bag, then
 it will update root password hash even if root does not have group attached
