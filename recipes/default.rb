@@ -38,7 +38,10 @@ node['cog_security']['admin_users'].each do |n|
     action :create
     home home_dir
     manage_home true
+    comment u['comment'] || ''
+    shell u['shell'] || '/bin/bash'
   end
+  
   directory "#{home_dir}/.ssh" do
     owner u['id']
     group u['gid'] || u['username']
