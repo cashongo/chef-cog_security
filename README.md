@@ -30,7 +30,7 @@ Linux, centos and debian
     <td><tt>['cog_security']['admin_users']</tt></td>
     <td>Array of strings</td>
     <td>Array of admin usernames</td>
-    <td><tt>10</tt></td>
+    <td><tt>[]</tt></td>
   </tr>
   <tr>
     <td><tt>['cog_security']['bag_name']</tt></td>
