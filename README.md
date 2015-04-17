@@ -53,6 +53,12 @@ Include `cog_security` in your node's `run_list`:
   ]
 }
 ```
+Attribute ['cog_security']['admin_users'] should contain array of users who 
+will be added and put into group which will have sudo rights without password.
+
+Except root, no user will get password, only SSH keys. 
+
+Root user is for console, other users are for SSH remote access.
 
 Create knife vault for each user, bag name should be ['cog_security']['bag_name'],
 item name should be username
@@ -68,9 +74,10 @@ item name should be username
 }
 ```
 
+There can be more then 1 ssh-key (it is an array).
 
-If you add id : 'root' and 'password' : 'rootpasswordhash' to root item in data bag, then
-it will update root password hash even if root does not have group attached
+If item named "root" exists in data bag and there is password hash, it will update
+root password, root user does not have to be in admin_users array.
 
 ## License and Authors
 
