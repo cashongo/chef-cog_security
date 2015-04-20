@@ -28,7 +28,7 @@ Linux, centos and debian
   </tr>
   <tr>
     <td><tt>['cog_security']['admin_users']</tt></td>
-    <td>Array of strings</td>
+    <td>Array</td>
     <td>Array of admin usernames</td>
     <td><tt>[]</tt></td>
   </tr>
