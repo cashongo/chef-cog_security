@@ -40,9 +40,25 @@ Linux, centos and debian
   </tr>
 </table>
 
+This is how you define attributes in environment:
+
+```ruby
+name "intra-prod"
+description "Internal production environment"
+default_attributes(
+  'cog_security' => {
+    'bag_name' => 'intra-prod_users',
+    'admin_users' => ['sysadmin.l','sysadmin.a','sysadmin.j']
+  }
+)
+
+```
 ## Usage
 
 ### cog_security::default
+
+It needs two things to work: attributes (which specify users and vault name) and
+vault where users are.
 
 Include `cog_security` in your node's `run_list`:
 
@@ -53,10 +69,10 @@ Include `cog_security` in your node's `run_list`:
   ]
 }
 ```
-Attribute ['cog_security']['admin_users'] should contain array of users who 
+Attribute ['cog_security']['admin_users'] should contain array of users who
 will be added and put into group which will have sudo rights without password.
 
-Except root, no user will get password, only SSH keys. 
+Except root, no user will get password, only SSH keys.
 
 Root user is for console, other users are for SSH remote access.
 
