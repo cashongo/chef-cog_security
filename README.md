@@ -33,6 +33,12 @@ Linux, centos and debian
     <td><tt>[]</tt></td>
   </tr>
   <tr>
+    <td><tt>['cog_security']['remove_users']</tt></td>
+    <td>Array</td>
+    <td>Array usernames to be removed</td>
+    <td><tt>[]</tt></td>
+  </tr>
+  <tr>
     <td><tt>['cog_security']['bag_name']</tt></td>
     <td>String</td>
     <td>Data bag name</td>
@@ -94,6 +100,8 @@ There can be more then 1 ssh-key (it is an array).
 
 If item named "root" exists in data bag and there is password hash, it will update
 root password, root user does not have to be in admin_users array.
+
+Removing users will break if user process is running.
 
 ## License and Authors
 
