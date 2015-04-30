@@ -41,7 +41,7 @@ node['cog_security']['admin_users'].each do |n|
     comment u['comment'] || ''
     shell u['shell'] || '/bin/bash'
   end
-  
+
   directory "#{home_dir}/.ssh" do
     owner u['id']
     group u['gid'] || u['username']
@@ -56,6 +56,12 @@ node['cog_security']['admin_users'].each do |n|
     mode "0600"
     variables :ssh_keys => u['ssh_keys']
     only_if {u['ssh_keys']}
+  end
+end
+
+node['cog_security']['remove_users'].each do |n|
+  user n do
+    action :remove
   end
 end
 
