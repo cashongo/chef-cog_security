@@ -46,11 +46,12 @@ node['cog_security']['admin_users'].each do |n|
     manage_home true
     comment u['comment'] || ''
     shell u['shell'] || '/bin/bash'
+    notifies :reload, "ohai[reload_passwd]", :immediately
   end
 
   directory "#{home_dir}/.ssh" do
     owner u['id']
-    group u['gid'] || u['username']
+    group lazy { node['etc']['passwd'][u['id']]['gid'] }
     mode "0700"
   end
 
@@ -58,7 +59,7 @@ node['cog_security']['admin_users'].each do |n|
     source "authorized_keys.erb"
     cookbook 'cog_security'
     owner u['id']
-    group u['gid'] || u['id']
+    group lazy { node['etc']['passwd'][u['id']]['gid'] }
     mode "0600"
     variables :ssh_keys => u['ssh_keys']
     only_if {u['ssh_keys']}
@@ -86,4 +87,9 @@ group node['cog_security']['sudo_group'] do
   action :create
   members node['cog_security']['admin_users']
   append false
+end
+
+ohai "reload_passwd" do
+  action :nothing
+  plugin "etc"
 end
