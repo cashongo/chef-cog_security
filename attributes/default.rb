@@ -1,5 +1,5 @@
 default['cog_security']['ssh_disable_root_login'] = false
-default['cog_security']['sudo_group'] = 'sysadmins'
+default['cog_security']['sudo_group'] = 'sysadmin'
 default['cog_security']['bag_name'] = 'users'
 default['cog_security']['home_base'] = '/home'
 default['cog_security']['admin_users'] = []

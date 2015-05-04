@@ -24,7 +24,7 @@ Linux, centos and debian
     <td><tt>['cog_security']['sudo_group']</tt></td>
     <td>String</td>
     <td>Sudo group name</td>
-    <td><tt>'wheel'</tt></td>
+    <td><tt>'sysadmin'</tt></td>
   </tr>
   <tr>
     <td><tt>['cog_security']['admin_users']</tt></td>
