@@ -20,7 +20,13 @@ end
 
 require 'chef-vault'
 
-rootuser=ChefVault::Item.load(node['cog_security']['bag_name'], "root")
+begin
+  rootuser=ChefVault::Item.load(node['cog_security']['bag_name'], "root")
+rescue ChefVault::Exceptions::KeysNotFound => e
+  log e.message
+  log "Root user data is not found, root user is not managed"
+  rootuser= Hash.new
+end
 
 user 'root' do
   action :manage
