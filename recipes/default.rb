@@ -91,5 +91,7 @@ end
 
 ohai "reload_passwd" do
   action :nothing
-  plugin "etc"
+  if (node['chef_packages']['ohai']['version'].to_i > 6) then
+    plugin "etc"
+  end
 end
