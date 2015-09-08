@@ -69,6 +69,7 @@ end
 node['cog_security']['remove_users'].each do |n|
   user n do
     action :remove
+    manage_home true
   end
 end
 
