@@ -33,6 +33,12 @@ Linux, centos and debian
     <td><tt>[]</tt></td>
   </tr>
   <tr>
+    <td><tt>['cog_security']['users']</tt></td>
+    <td>Array</td>
+    <td>Array of usernames without sudo rights</td>
+    <td><tt>[]</tt></td>
+  </tr>
+  <tr>
     <td><tt>['cog_security']['remove_users']</tt></td>
     <td>Array</td>
     <td>Array usernames to be removed</td>
@@ -53,8 +59,10 @@ name "intra-prod"
 description "Internal production environment"
 default_attributes(
   'cog_security' => {
-    'bag_name' => 'intra-prod_users',
-    'admin_users' => ['sysadmin.l','sysadmin.a','sysadmin.j']
+    'bucket_name' => 'intra-prod',
+    'admin_users' => ['sysadmin.l','sysadmin.a','sysadmin.j'],
+    'users' => ['user.a','user.b'],
+    'remove_users' => ['user.x','user.y']
   }
 )
 
@@ -82,17 +90,23 @@ Except root, no user will get password, only SSH keys.
 
 Root user is for console, other users are for SSH remote access.
 
-Create knife vault for each user, bag name should be ['cog_security']['bag_name'],
-item name should be username
+Create knife vault for your entity, bag name should be ['cog_security']['bucket_name']
 
 ```json
 {
-  "id": "sysadmin.user",
-  "ssh_keys": [
-    "ssh-rsa AAAA....xxx user@machine"
+  "sysadmin.user.a" {
+    "ssh_keys": [
+      "ssh-rsa AAAA....xxx user@machine"
     ],
-  "shell": "/bin/bash",
-  "comment": "Sysadmin User"
+    "shell": "/bin/bash",
+    "comment": "Sysadmin User A"
+  },
+  "sysadmin.user.b" {
+    "ssh_keys": [
+      "ssh-rsa BBBB....xxx userb@machine"
+    ],
+    "comment": "Sysadmin User B"
+  }
 }
 ```
 
