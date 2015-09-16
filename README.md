@@ -94,14 +94,14 @@ Create knife vault for your entity, bag name should be ['cog_security']['bucket_
 
 ```json
 {
-  "sysadmin.user.a" {
+  "sysadmin.user.a": {
     "ssh_keys": [
       "ssh-rsa AAAA....xxx user@machine"
     ],
     "shell": "/bin/bash",
     "comment": "Sysadmin User A"
   },
-  "sysadmin.user.b" {
+  "sysadmin.user.b": {
     "ssh_keys": [
       "ssh-rsa BBBB....xxx userb@machine"
     ],
