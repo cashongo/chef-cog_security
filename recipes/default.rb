@@ -20,49 +20,44 @@ end
 
 require 'chef-vault'
 
-begin
-  rootuser=ChefVault::Item.load(node['cog_security']['bag_name'], "root")
-rescue ChefVault::Exceptions::KeysNotFound => e
-  log e.message
-  log "Root user data is not found, root user is not managed"
-  rootuser= Hash.new
+userdata = ChefVault::Item.load('cog_security',node['cog_security']['bucket_name'])
+
+print node['cog_security']['bucket_name']+"\n"
+if !userdata['root'].nil? && !userdata['root']['password'].nil? then
+  user 'root' do
+    action :manage
+    password userdata['root']['password']
+  end
 end
 
-user 'root' do
-  action :manage
-  password rootuser['password']
-  only_if { rootuser['password'] }
-end
+allusers = node['cog_security']['admin_users'] + node['cog_security']['users']
 
-node['cog_security']['admin_users'].each do |n|
-  #User data from vault
-  u=ChefVault::Item.load(node['cog_security']['bag_name'], n)
-
+allusers.each do |n|
   ### Need to create user first
-  home_dir=node['cog_security']['home_base'] + '/' + u['id']
-  user u['id'] do
+  home_dir=node['cog_security']['home_base'] + '/' + n
+  user n do
     action :create
     home home_dir
     manage_home true
-    comment u['comment'] || ''
-    shell u['shell'] || '/bin/bash'
+    comment userdata[n]['comment'] || ''
+    shell userdata[n]['shell'] || node['cog_security']['shell']
     notifies :reload, "ohai[reload_passwd]", :immediately
   end
 
   directory "#{home_dir}/.ssh" do
-    owner u['id']
-    group lazy { node['etc']['passwd'][u['id']]['gid'] }
+    owner n
+    group lazy { node['etc']['passwd'][n]['gid'] }
     mode "0700"
   end
 
   template "#{home_dir}/.ssh/authorized_keys" do
     source "authorized_keys.erb"
     cookbook 'cog_security'
-    owner u['id']
-    group lazy { node['etc']['passwd'][u['id']]['gid'] }
+    owner n
+    group lazy { node['etc']['passwd'][n]['gid'] }
     mode "0600"
-    variables :ssh_keys => u['ssh_keys']
-    only_if {u['ssh_keys']}
+    variables :ssh_keys => userdata[n]['ssh_keys']
+    only_if {userdata[n]['ssh_keys']}
   end
 end
 
