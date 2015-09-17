@@ -1,4 +1,4 @@
-### 0.3.0 (2015-09-16)
+### 0.3.0 (2015-09-17)
 
 - Rewrote data bag logic
 - Renamed attribute bag_name to bucket_name
