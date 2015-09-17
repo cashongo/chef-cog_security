@@ -22,7 +22,6 @@ require 'chef-vault'
 
 userdata = ChefVault::Item.load('cog_security',node['cog_security']['bucket_name'])
 
-print node['cog_security']['bucket_name']+"\n"
 if !userdata['root'].nil? && !userdata['root']['password'].nil? then
   user 'root' do
     action :manage
