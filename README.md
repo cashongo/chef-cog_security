@@ -45,9 +45,9 @@ Linux, centos and debian
     <td><tt>[]</tt></td>
   </tr>
   <tr>
-    <td><tt>['cog_security']['bag_name']</tt></td>
+    <td><tt>['cog_security']['bucket_name']</tt></td>
     <td>String</td>
-    <td>Data bag name</td>
+    <td>second part of vault name (bucket), first part is fixed to 'cog_security'</td>
     <td><tt>'users'</tt></td>
   </tr>
 </table>
@@ -90,7 +90,9 @@ Except root, no user will get password, only SSH keys.
 
 Root user is for console, other users are for SSH remote access.
 
-Create knife vault for your entity, bag name should be ['cog_security']['bucket_name']
+Create knife vault for your entity, vault name should be
+
+    ['cog_security'][node['cog_security']['bucket_name']]
 
 ```json
 {
