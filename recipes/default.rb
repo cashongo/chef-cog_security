@@ -89,6 +89,18 @@ ruby_block "edit sshd_config set client timeout" do
   notifies :reload, "service[ssh]"
 end
 
+ruby_block "edit sshd_config set client alive count max" do
+  only_if { node['cog_security'].has_key?('ssh_client_timeout') && node['cog_security']['ssh_client_timeout'] > 0 }
+  block do
+    rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
+    rc.insert_line_if_no_match(/^ClientAliveCountMax/, "ClientAliveCountMax #{node['cog_security']['ssh_client_timeout_count_max']}")
+    rc.search_file_replace_line(/^ClientAliveCountMax/,"ClientAliveCountMax #{node['cog_security']['ssh_client_timeout_count_max']}")
+    rc.write_file
+  end
+  notifies :reload, "service[ssh]"
+end
+
+
 group node['cog_security']['sudo_group'] do
   action :create
   members node['cog_security']['admin_users']
