@@ -1,3 +1,8 @@
+### 0.4.1 (2015-11-09)
+- Added E-mail target address for fail2ban
+- Centos 7 fail2ban action is ipset
+- SSH client timeout needs also ClientAliveCountMax setting
+
 ### 0.4.0 (2015-11-09)
 - Will change SSH PermitRootLogin to yes or no, previously only no
 - Add fail2ban checks to SSH
