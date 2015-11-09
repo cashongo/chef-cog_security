@@ -7,6 +7,7 @@ default['cog_security']['admin_users'] = []
 default['cog_security']['users'] = []
 default['cog_security']['remove_users'] = []
 default['cog_security']['ssh_client_timeout'] = 1800
+default['cog_security']['ssh_client_timeout_count_max'] = 0
 
 default['fail2ban']['bantime']  = 1800
 
