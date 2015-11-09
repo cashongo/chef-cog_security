@@ -64,11 +64,18 @@ Amazon Linux, CentOS and Debian
     <td><tt>1800</tt></td>
   </tr>
   <tr>
+    <td><tt>['fail2ban']['email]</tt></td>
+    <td>String</td>
+    <td>E-mail address where to send Fail2ban reports
+    <td><tt>admin@cashongo.co.uk</tt></td>
+  </tr>
+  <tr>
     <td><tt>['fail2ban']['services']['ssh']['enabled']</tt></td>
     <td>String</td>
     <td>String ("true"|"false") to notify if ssh check on fail2ban is enabled or disabled</td>
     <td><tt>'true'</tt></td>
   </tr>
+
 </table>
 
 This is how you define attributes in environment:
