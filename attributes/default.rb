@@ -10,6 +10,7 @@ default['cog_security']['ssh_client_timeout'] = 1800
 default['cog_security']['ssh_client_timeout_count_max'] = 0
 
 default['fail2ban']['bantime']  = 1800
+default['fail2ban']['email'] = 'admin@cashongo.co.uk'
 
 default['authorization']['sudo']['groups']            = [default['cog_security']['sudo_group']]
 default['authorization']['sudo']['users']             = []
