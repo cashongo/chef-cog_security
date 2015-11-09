@@ -8,6 +8,7 @@
 #
 
 include_recipe 'sudo'
+include_recipe 'fail2ban'
 
 service "ssh" do
   service_name node['cog_security']['ssh_service_name']
@@ -67,15 +68,25 @@ node['cog_security']['remove_users'].each do |n|
   end
 end
 
-ruby_block "edit sshd_config" do
-  only_if { node['cog_security']['ssh_disable_root_login'] }
+ruby_block "edit sshd_config disable root login" do
   block do
     rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
-    rc.insert_line_if_no_match(/^PermitRootLogin/, "PermitRootLogin no")
-    rc.search_file_replace_line(/^PermitRootLogin/,"PermitRootLogin no")
+    rc.insert_line_if_no_match(/^PermitRootLogin/, "PermitRootLogin " + (node['cog_security']['ssh_disable_root_login'] ? 'no' : 'yes'))
+    rc.search_file_replace_line(/^PermitRootLogin/,"PermitRootLogin " + (node['cog_security']['ssh_disable_root_login'] ? 'no' : 'yes'))
     rc.write_file
   end
-  notifies :restart, "service[ssh]"
+  notifies :reload, "service[ssh]"
+end
+
+ruby_block "edit sshd_config set client timeout" do
+  only_if { node['cog_security'].has_key?('ssh_client_timeout') && node['cog_security']['ssh_client_timeout'] > 0 }
+  block do
+    rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
+    rc.insert_line_if_no_match(/^ClientAliveInterval/, "ClientAliveInterval #{node['cog_security']['ssh_client_timeout']}")
+    rc.search_file_replace_line(/^ClientAliveInterval/,"ClientAliveInterval #{node['cog_security']['ssh_client_timeout']}")
+    rc.write_file
+  end
+  notifies :reload, "service[ssh]"
 end
 
 group node['cog_security']['sudo_group'] do
