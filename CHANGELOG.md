@@ -1,3 +1,8 @@
+### 0.4.0 (2015-11-09)
+- Will change SSH PermitRootLogin to yes or no, previously only no
+- Add fail2ban checks to SSH
+- Add SSH timeout value (30 minutes)
+
 ### 0.3.0 (2015-09-17)
 
 - Rewrote data bag logic
