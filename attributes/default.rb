@@ -6,6 +6,14 @@ default['cog_security']['shell'] = '/bin/bash'
 default['cog_security']['admin_users'] = []
 default['cog_security']['users'] = []
 default['cog_security']['remove_users'] = []
+default['cog_security']['ssh_client_timeout'] = 1800
+default['cog_security']['ssh_client_timeout_count_max'] = 0
+
+default['fail2ban']['bantime']  = 1800
+default['fail2ban']['email'] = 'admin@cashongo.co.uk'
+
+default['fail2ban']['banaction'] = 'firewallcmd-new' if (platform_family = 'rhel' &&  platform_version[0,1]=='7')
+
 
 default['authorization']['sudo']['groups']            = [default['cog_security']['sudo_group']]
 default['authorization']['sudo']['users']             = []
@@ -23,3 +31,13 @@ when "debian"
 when "rhel"
   default['cog_security']['ssh_service_name'] = "sshd"
 end
+
+default['fail2ban']['services'] = {
+  'ssh' => {
+    "enabled" => "true",
+    "port" => "ssh",
+    "filter" => "sshd",
+    "logpath" => '/var/log/messages',
+    "maxretry" => "6"
+  }
+}

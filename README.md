@@ -1,9 +1,10 @@
 # cog_security-cookbook
 
-This cookbook
+This cookbook implements security policies for Cash on Go.
+
 ## Supported Platforms
 
-Linux, centos and debian
+Amazon Linux, CentOS and Debian
 
 ## Attributes
 
@@ -47,9 +48,34 @@ Linux, centos and debian
   <tr>
     <td><tt>['cog_security']['bucket_name']</tt></td>
     <td>String</td>
-    <td>second part of vault name (bucket), first part is fixed to 'cog_security'</td>
+    <td>second part of vault name (item), first part is fixed to 'cog_security'</td>
     <td><tt>'users'</tt></td>
   </tr>
+  <tr>
+    <td><tt>['cog_security']['ssh_client_timeout']</tt></td>
+    <td>Integer</td>
+    <td>timeout before logging out inactive user</td>
+    <td><tt>'users'</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['fail2ban']['bantime']</tt></td>
+    <td>Integer</td>
+    <td>How many seconds IP address will be locked out</td>
+    <td><tt>1800</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['fail2ban']['email]</tt></td>
+    <td>String</td>
+    <td>E-mail address where to send Fail2ban reports
+    <td><tt>admin@cashongo.co.uk</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['fail2ban']['services']['ssh']['enabled']</tt></td>
+    <td>String</td>
+    <td>String ("true"|"false") to notify if ssh check on fail2ban is enabled or disabled</td>
+    <td><tt>'true'</tt></td>
+  </tr>
+
 </table>
 
 This is how you define attributes in environment:
@@ -118,6 +144,11 @@ If item named "root" exists in data bag and there is password hash, it will upda
 root password, root user does not have to be in admin_users array.
 
 Removing users will break if user process is running.
+
+This cookbook uses `fail2ban` cookbook which can be managed by node attributes.
+Some attributes are already defined, but those attributes can be overrided.
+
+Look at fail2ban cookbook documentation at http://supermarket.chef.io
 
 ## License and Authors
 
