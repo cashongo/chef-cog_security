@@ -25,7 +25,7 @@ default['authorization']['sudo']['command_aliases']   = []
 default['authorization']['sudo']['env_keep_add']      = []
 default['authorization']['sudo']['env_keep_subtract'] = []
 
-case platform_family
+case node.platform_family
 when "debian"
   default['cog_security']['ssh_service_name'] = "ssh"
 when "rhel"
