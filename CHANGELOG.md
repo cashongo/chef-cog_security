@@ -1,3 +1,6 @@
+### 0.4.2 (2015-11-12)
+- Fail2ban logs to syslog
+
 ### 0.4.1 (2015-11-09)
 - Added E-mail target address for fail2ban
 - Centos 7 fail2ban action is ipset
