@@ -1,0 +1,22 @@
+---
+driver:
+  name: docker
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-14.04
+  - name: centos-7.1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[cog_security::default]
+    attributes:
+      admin_users:
+        - sysadmin.l
+      users:
+        - sysadmin.j
+      remove_users:
+        - sysadmin.a
