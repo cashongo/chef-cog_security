@@ -68,35 +68,44 @@ node['cog_security']['remove_users'].each do |n|
   end
 end
 
+rootpermit = "PermitRootLogin " + (node['cog_security']['ssh_disable_root_login'] ? 'no' : 'yes')
+
 ruby_block "edit sshd_config disable root login" do
   block do
     rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
-    rc.insert_line_if_no_match(/^PermitRootLogin/, "PermitRootLogin " + (node['cog_security']['ssh_disable_root_login'] ? 'no' : 'yes'))
-    rc.search_file_replace_line(/^PermitRootLogin/,"PermitRootLogin " + (node['cog_security']['ssh_disable_root_login'] ? 'no' : 'yes'))
+    rc.insert_line_if_no_match(/^PermitRootLogin/, rootpermit)
+    rc.search_file_replace_line(/^PermitRootLogin/, rootpermit)
     rc.write_file
   end
+  not_if { ::File.readlines('/etc/ssh/sshd_config').grep(/^#{rootpermit}$/).any? }
   notifies :reload, "service[ssh]"
 end
+
+aliveinterval = "ClientAliveInterval #{node['cog_security']['ssh_client_timeout']}"
 
 ruby_block "edit sshd_config set client timeout" do
   only_if { node['cog_security'].has_key?('ssh_client_timeout') && node['cog_security']['ssh_client_timeout'] > 0 }
   block do
     rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
-    rc.insert_line_if_no_match(/^ClientAliveInterval/, "ClientAliveInterval #{node['cog_security']['ssh_client_timeout']}")
-    rc.search_file_replace_line(/^ClientAliveInterval/,"ClientAliveInterval #{node['cog_security']['ssh_client_timeout']}")
+    rc.insert_line_if_no_match(/^ClientAliveInterval/, aliveinterval)
+    rc.search_file_replace_line(/^ClientAliveInterval/,aliveinterval)
     rc.write_file
   end
+  not_if { ::File.readlines('/etc/ssh/sshd_config').grep(/^#{aliveinterval}$/).any? }
   notifies :reload, "service[ssh]"
 end
+
+clientalive = "ClientAliveCountMax #{node['cog_security']['ssh_client_timeout_count_max']}"
 
 ruby_block "edit sshd_config set client alive count max" do
   only_if { node['cog_security'].has_key?('ssh_client_timeout') && node['cog_security']['ssh_client_timeout'] > 0 }
   block do
     rc = Chef::Util::FileEdit.new("/etc/ssh/sshd_config")
-    rc.insert_line_if_no_match(/^ClientAliveCountMax/, "ClientAliveCountMax #{node['cog_security']['ssh_client_timeout_count_max']}")
-    rc.search_file_replace_line(/^ClientAliveCountMax/,"ClientAliveCountMax #{node['cog_security']['ssh_client_timeout_count_max']}")
+    rc.insert_line_if_no_match(/^ClientAliveCountMax/, clientalive);
+    rc.search_file_replace_line(/^ClientAliveCountMax/, clientalive);
     rc.write_file
   end
+  not_if { ::File.readlines('/etc/ssh/sshd_config').grep(/^#{clientalive}$/).any? }
   notifies :reload, "service[ssh]"
 end
 

@@ -1,3 +1,6 @@
+# 0.4.3 (2015-11-20)
+- SSH configuration only changes if has to change
+
 # 0.4.2 (2015-11-12)
 - Fail2ban logs to syslog
 - bugfixed case statement
