@@ -1,3 +1,6 @@
+# 0.5.0 (2016-09-20)
+- Fail2ban script for SLACK!
+
 # 0.4.3 (2015-11-20)
 - SSH configuration only changes if has to change
 
