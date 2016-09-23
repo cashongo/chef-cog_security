@@ -58,6 +58,12 @@ Amazon Linux, CentOS and Debian
     <td><tt>'users'</tt></td>
   </tr>
   <tr>
+    <td><tt>['cog_security']['slack_webhook']</tt></td>
+    <td>String</td>
+    <td>Slack channel to send fail2ban notices</td>
+    <td><tt>'#test'</tt></td>
+  </tr>
+  <tr>
     <td><tt>['fail2ban']['bantime']</tt></td>
     <td>Integer</td>
     <td>How many seconds IP address will be locked out</td>
@@ -84,11 +90,12 @@ This is how you define attributes in environment:
 name "intra-prod"
 description "Internal production environment"
 default_attributes(
-  'cog_security' => {
-    'bucket_name' => 'intra-prod',
-    'admin_users' => ['sysadmin.l','sysadmin.a','sysadmin.j'],
-    'users' => ['user.a','user.b'],
-    'remove_users' => ['user.x','user.y']
+  cog_security: {
+    slack_channel: '#alarms-security',
+    bucket_name: 'intra-prod',
+    admin_users: ['sysadmin.l','sysadmin.a','sysadmin.j'],
+    users: ['user.a','user.b'],
+    remove_users: ['user.x','user.y']
   }
 )
 
@@ -122,6 +129,7 @@ Create knife vault for your entity, vault name should be
 
 ```json
 {
+  "slack_webhook": "http://slackwebhookurl/",
   "sysadmin.user.a": {
     "ssh_keys": [
       "ssh-rsa AAAA....xxx user@machine"
