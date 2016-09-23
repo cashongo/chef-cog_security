@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# message first command argument
+MESSAGE=$1
+HOOK_URL=<%= @hook %>
+HOST=<%= @hostname %>
+
+CHANNEL="<%= @channel %>"
+USERNAME="fail2ban"
+ICON=":cop:"
+
+# ip second command argument
+IP=$2
+
+curl -X POST -s --data-urlencode "payload={\"channel\": \"${CHANNEL}\", \"username\": \"${USERNAME}\", \"text\": \"[${HOST}] ${MESSAGE}\", \"icon_emoji\": \"${ICON}\"}" ${HOOK_URL}
+
+exit 0
