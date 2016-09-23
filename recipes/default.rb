@@ -8,7 +8,7 @@
 #
 
 include_recipe 'sudo'
-include_recipe 'fail2ban'
+include_recipe 'cog_security::fail2ban'
 
 service "ssh" do
   service_name node['cog_security']['ssh_service_name']
