@@ -5,7 +5,7 @@ end
 require 'chef-vault'
 
 userdata = ChefVault::Item.load('cog_security',node['cog_security']['bucket_name'])
-
+Chef::Log.info(userdata.inspect)
 package 'curl'
 
 directory '/etc/fail2ban/action.d' do
