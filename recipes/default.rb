@@ -33,6 +33,11 @@ end
 allusers = node['cog_security']['admin_users'] + node['cog_security']['users']
 
 allusers.each do |n|
+  if userdata.nil || userdata[n].nil
+    Chef::Log.error('missing userdata for user: %s, skipping user' % n)
+    next
+  end
+
   ### Need to create user first
   home_dir=node['cog_security']['home_base'] + '/' + n
   user n do

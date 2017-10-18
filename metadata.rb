@@ -4,7 +4,7 @@ maintainer_email 'lauri.jesmin@cashongo.co.uk'
 license          'All rights reserved'
 description      'Change security settings, add users'
 long_description 'Change security settings, add users'
-version          '0.5.1'
+version          '0.5.2'
 
 depends 'sudo',      '~> 2.7.1'
 depends 'fail2ban',  '~> 2.3.0'
