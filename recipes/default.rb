@@ -33,7 +33,7 @@ end
 allusers = node['cog_security']['admin_users'] + node['cog_security']['users']
 
 allusers.each do |n|
-  if userdata.nil || userdata[n].nil
+  if userdata.nil? || userdata[n].nil?
     Chef::Log.error('missing userdata for user: %s, skipping user' % n)
     next
   end
