@@ -23,7 +23,7 @@ require 'chef-vault'
 
 userdata = ChefVault::Item.load('cog_security',node['cog_security']['bucket_name'])
 
-if !userdata['root'].nil? && !userdata['root']['password'].nil? then
+if !userdata['root'].nil? && !userdata['root']['password'].nil? && !node.role?('proxmox')  then
   user 'root' do
     action :manage
     password userdata['root']['password']
